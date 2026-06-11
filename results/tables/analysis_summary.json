@@ -1,0 +1,14 @@
+{
+  "n_samples_total":126,
+  "n_covid_samples":100,
+  "n_controls":26,
+  "n_filtered_genes":11924,
+  "n_variable_genes":3000,
+  "best_method":"hierarchical",
+  "best_params":"ward, k=2",
+  "best_assignment_key":"hierarchical_ward_k2",
+  "best_ari":0.2630032324,
+  "best_silhouette":0.1755652898,
+  "best_nmi":0.2071677052,
+  "best_binary_accuracy":0.76
+}

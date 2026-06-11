@@ -1,0 +1,199 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{hyperref}
+\usepackage{array}
+
+\title{Identificación de subgrupos clínicos de COVID-19 mediante expresión génica}
+\author{Rivera Morales David \\ Lopez Bernal Yeimi Lizet \\ Hidalgo Carrillo Amir Gilberto \\ Badager Estrada Aaron Omar}
+\date{Genómica Computacional -- Semestre 2026-II\\GSE157103, GEO/NCBI}
+
+\begin{document}
+\maketitle
+
+\section*{Resumen}
+Este proyecto analiza GSE157103 para revisar si la expresión génica en sangre
+permite formar grupos parecidos a UCI/no UCI en pacientes con COVID-19. Se
+usaron matrices procesadas de conteos esperados y TPM, se filtraron genes con
+baja señal y se trabajó con $\log_2(TPM + 1)$. Después se compararon k-means,
+agrupamiento jerárquico y DBSCAN. El mejor resultado fue agrupamiento
+jerárquico con ward, k=2, con
+ARI=0.263, NMI=0.207,
+silueta=0.176 y exactitud binaria aproximada de
+0.76. La señal no es perfecta, pero sí es consistente:
+un grupo concentra más pacientes UCI y el otro más pacientes no UCI.
+
+\section{Introducción}
+COVID-19 no se presenta igual en todos los pacientes. Algunos cursan la
+enfermedad con síntomas moderados y otros requieren cuidados intensivos. Esa
+diferencia clínica puede reflejar cambios moleculares en sangre, sobre todo en
+genes relacionados con inflamación y respuesta inmune. La pregunta de este
+proyecto fue directa: si no se le dan al algoritmo las etiquetas UCI/no UCI, ¿los
+perfiles de expresión forman grupos parecidos a esas categorías?
+
+\section{Datos y metodología}
+Se usaron tres archivos de GSE157103: conteos esperados, TPM y metadatos de GEO.
+Después de alinear expresión y metadatos quedaron 126 muestras:
+100 COVID-19 y 26 controles no COVID-19. Dentro de las
+muestras COVID-19 hay 50 pacientes UCI y
+50 no UCI. La comparación principal se hizo
+solo con pacientes COVID-19.
+
+Se retuvieron genes con TPM al menos 1 y conteos esperados al menos 10 en un
+mínimo de 5 muestras COVID-19 o 10\% de las muestras COVID-19. Después del
+filtrado quedaron 11924 genes. La expresión se transformó
+como $\log_2(TPM + 1)$ y se seleccionaron los 3000 genes de
+mayor varianza.
+
+Se aplicaron PCA y UMAP para visualización. Para agrupamiento se compararon
+k-means, agrupamiento jerárquico y DBSCAN. La concordancia con UCI/no UCI se
+evaluó con ARI, NMI, silueta y exactitud binaria cuando el método produjo dos
+grupos.
+
+\subsection*{Procesamiento aplicado}
+\begin{enumerate}
+\item Se filtraron genes con baja expresión.
+\item Se aplicó la transformación $\log_2(TPM + 1)$.
+\item Se seleccionaron los 3000 genes más variables.
+\item Se aplicó PCA y UMAP.
+\item Se probaron k-means, agrupamiento jerárquico y DBSCAN.
+\item UCI/no UCI se usó solo para evaluar los grupos, no para construirlos.
+\end{enumerate}
+
+\section{Resultados}
+El mejor método por ARI fue el agrupamiento jerárquico con
+ward, k=2. El resultado fue:
+
+\begin{center}
+\begin{tabular}{l r}
+\hline
+Métrica & Valor \\
+\hline
+ARI & 0.263 \\
+NMI & 0.207 \\
+Silueta & 0.176 \\
+Exactitud binaria & 0.76 \\
+\hline
+\end{tabular}
+\end{center}
+
+\subsection*{Comparación por método}
+\begin{center}
+\small
+\begin{tabular}{l r l r r r r}
+\hline
+Método & Corridas & Mejor configuración & Grupos & ARI & Silueta & Ruido \\
+\hline
+DBSCAN & 44 & min\_samples=3, eps=22.71 & 6 & 0.060 & -0.055 & 0.57 \\
+jerárquico & 15 & ward, k=2 & 2 & 0.263 & 0.176 & 0.00 \\
+k-means & 5 & k=3 & 3 & 0.226 & 0.229 & 0.00 \\
+\hline
+\end{tabular}
+\end{center}
+
+DBSCAN se evaluó en 44 combinaciones de parámetros. Su mejor ARI fue 0.060 con min\_samples=3, eps=22.71 y fracción de ruido 0.57. Esto deja claro que DBSCAN sí se probó, pero no
+fue el método más útil para esta pregunta.
+
+\subsection*{Tabla grupo vs. UCI}
+\begin{center}
+\begin{tabular}{r r r}
+\hline
+Grupo & UCI & No UCI \\
+\hline
+0 & 40 & 14 \\
+1 & 10 & 36 \\
+\hline
+\end{tabular}
+\end{center}
+
+\begin{itemize}
+\item \textbf{Grupo 0}: 40/54 UCI (74.1\%) y 14/54 no UCI (25.9\%).
+\item \textbf{Grupo 1}: 10/46 UCI (21.7\%) y 36/46 no UCI (78.3\%).
+\end{itemize}
+
+Observación: el grupo 0 concentra más pacientes UCI y el grupo 1 concentra más
+pacientes no UCI. La separación no es perfecta, pero sí hay una dirección clara.
+
+\subsection*{Genes marcadores principales}
+\begin{itemize}
+\item \textbf{Grupo 0}: IL1R2, C3orf86, UPP1, OLAH, GRB10, ROPN1L, GMFG, LRG1, FLOT1, RSPH14
+\item \textbf{Grupo 1}: CD4, TMEM109, AARS2, ST3GAL5, TP53, CHST14, DCP1B, PATZ1, EID2, RSAD1
+\end{itemize}
+
+\subsection*{Enriquecimiento funcional}
+\begin{itemize}
+\item \textbf{Grupo 0}: degranulación de neutrófilos; respuesta a estímulos; respuesta inflamatoria; respuesta de defensa; sistema inmune innato
+\item \textbf{Grupo 1}: diferenciación de células Th17; diferenciación de células Th1 y Th2; metabolismo de RNA no codificante; ensamblaje de snRNP; infección por virus de leucemia de células T humanas tipo 1
+\end{itemize}
+
+Observación: el grupo 0 tiene una señal más inflamatoria. Genes como
+\textit{IL1R2}, \textit{UPP1}, \textit{OLAH} y \textit{LRG1} son
+compatibles con activación inmune innata y cambios mieloides. El grupo 1 incluye
+\textit{CD4} y términos relacionados con células T, por lo que parece menos
+dominado por inflamación innata.
+
+\section{Figuras principales}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.95\linewidth]{\detokenize{../results/figures/qc_library_detected_genes.png}}
+\caption{Control de calidad por tipo de muestra y estado UCI.}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.95\linewidth]{\detokenize{../results/figures/pca_covid_icu_clusters.png}}
+\caption{PCA de muestras COVID-19 coloreado por estado UCI y grupo seleccionado.}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.85\linewidth]{\detokenize{../results/figures/clustering_ari_top_methods.png}}
+\caption{Comparación de métodos por índice de Rand ajustado.}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.75\linewidth]{\detokenize{../results/figures/top_marker_gene_heatmap.png}}
+\caption{Mapa de calor de genes marcadores por grupo.}
+\end{figure}
+
+\section{Discusión}
+El resultado apoya la hipótesis, pero con cuidado. Los transcriptomas sanguíneos
+sí contienen información relacionada con severidad, aunque no separan a todos los
+pacientes sin error. Esto tiene sentido porque UCI/no UCI es una etiqueta clínica
+práctica, no un estado molecular puro. La parte más fuerte del análisis es la
+coherencia entre el grupo con más pacientes UCI, los genes marcadores y los
+términos funcionales de inflamación/respuesta innata.
+
+Limitaciones principales:
+\begin{itemize}
+\item Se usaron matrices procesadas de GEO, no lecturas crudas.
+\item No se ajustó por edad, sexo, ventilación mecánica ni comorbilidades.
+\item Los marcadores son exploratorios y no sustituyen DESeq2 o limma-voom.
+\item Sangre completa mezcla composición celular y activación transcripcional.
+\item g:Profiler depende de bases de datos externas que pueden cambiar.
+\end{itemize}
+
+\section{Conclusión}
+El agrupamiento no supervisado recuperó una señal parcial de UCI/no UCI en
+GSE157103. El mejor resultado fue agrupamiento jerárquico
+con ward, k=2, ARI=0.263 y exactitud binaria
+aproximada de 0.76. El resultado no funciona como
+diagnóstico perfecto, pero sí muestra una señal biológica consistente:
+inflamación, respuesta innata y degranulación de neutrófilos aparecen en el
+grupo con mayor proporción de pacientes UCI.
+
+\section*{Bibliografía}
+\begin{enumerate}
+\item Overmyer, K. A. et al. (2021). Large-Scale Multi-omic Analysis of COVID-19 Severity. \textit{Cell Systems}, 12(1), 23--40.e7.
+\item NCBI GEO. GSE157103: Large-scale Multi-omic Analysis of COVID-19 Severity.
+\item Pedregosa, F. et al. (2011). Scikit-learn: Machine Learning in Python. \textit{Journal of Machine Learning Research}, 12, 2825--2830.
+\item McInnes, L. et al. (2018). UMAP: Uniform Manifold Approximation and Projection. \textit{Journal of Open Source Software}, 3(29), 861.
+\item Raudvere, U. et al. (2019). g:Profiler: a web server for functional enrichment analysis. \textit{Nucleic Acids Research}, 47(W1), W191--W198.
+\item Benjamini, Y. y Hochberg, Y. (1995). Controlling the False Discovery Rate. \textit{Journal of the Royal Statistical Society: Series B}, 57(1), 289--300.
+\end{enumerate}
+
+\end{document}

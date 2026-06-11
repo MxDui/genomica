@@ -1,0 +1,40 @@
+cluster,source,name,p_value
+0,REAC,Neutrophil degranulation,1.7265217442156917e-09
+0,GO:BP,response to stimulus,1.1332807250860112e-06
+0,GO:BP,inflammatory response,1.1974016161156834e-05
+0,GO:BP,defense response,3.061079028634607e-05
+0,REAC,Innate Immune System,7.431654841963484e-05
+0,GO:BP,cellular response to stimulus,9.538857992200971e-05
+0,REAC,Immune System,0.00019603032599253286
+0,GO:BP,response to external stimulus,0.0004920870708491574
+0,GO:BP,cell communication,0.0007452400820046589
+0,GO:BP,regulation of multicellular organismal process,0.000849169650874589
+0,GO:BP,signal transduction,0.0008530214886626583
+0,GO:BP,regulation of cytokine production,0.0009298961017404656
+0,GO:BP,cytokine production,0.0010434556805197497
+0,GO:BP,signaling,0.0014021963203483976
+0,GO:BP,positive regulation of biological process,0.0014933026627208653
+0,GO:BP,cell migration,0.0019792438836943784
+0,GO:BP,response to stress,0.002206149763211245
+0,GO:BP,positive regulation of multicellular organismal process,0.0022309189924142607
+0,GO:BP,positive regulation of immune system process,0.0035325114408973285
+0,GO:BP,peptidyl-cysteine S-nitrosylation,0.004211559460237559
+1,KEGG,Th17 cell differentiation,5.207810289971675e-05
+1,KEGG,Th1 and Th2 cell differentiation,0.0002255693821961485
+1,REAC,Metabolism of non-coding RNA,0.0015576224974311456
+1,REAC,snRNP Assembly,0.0015576224974311456
+1,KEGG,Human T-cell leukemia virus 1 infection,0.0016093719383188563
+1,KEGG,Herpes simplex virus 1 infection,0.0023872014844055333
+1,KEGG,Asthma,0.0032244960215907633
+1,KEGG,Allograft rejection,0.007949484341409437
+1,GO:BP,regulation of nucleobase-containing compound metabolic process,0.00840541445838649
+1,GO:BP,regulation of RNA metabolic process,0.013253496923833362
+1,GO:BP,RNA transport,0.016352829692899938
+1,GO:BP,nucleic acid transport,0.016352829692899938
+1,GO:BP,establishment of RNA localization,0.01872692128186937
+1,KEGG,Intestinal immune network for IgA production,0.021469641702775603
+1,KEGG,Autoimmune thyroid disease,0.03233074117981011
+1,REAC,SUMO E3 ligases SUMOylate target proteins,0.03657390333645949
+1,KEGG,Hematopoietic cell lineage,0.03790039075486647
+1,REAC,SUMOylation,0.04648744174239565
+1,GO:BP,positive regulation of mRNA metabolic process,0.049261676763002936

@@ -1,0 +1,19 @@
+cff-version: 1.2.0
+message: "Si usas este repositorio, citalo como se indica abajo."
+title: "Identificacion de subgrupos clinicos de COVID-19 mediante expresion genica"
+type: software
+authors:
+  - name: "Rivera Morales David"
+  - name: "Lopez Bernal Yeimi Lizet"
+  - name: "Hidalgo Carrillo Amir Gilberto"
+  - name: "Badager Estrada Aaron Omar"
+version: "1.0.0-entrega-final"
+date-released: "2026-06-11"
+repository-code: "https://github.com/pendiente/proyecto-genomica-gse157103"
+keywords:
+  - genomica computacional
+  - RNA-seq
+  - COVID-19
+  - GSE157103
+  - clustering
+license: MIT
