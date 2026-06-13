@@ -98,7 +98,6 @@ por inflamación innata.
 ## Hallazgos principales
 
 - Sangre completa mezcla composición celular y activación transcripcional.
-- No se ajustó por edad, sexo, ventilación ni comorbilidades.
 - Marcadores calculados de forma exploratoria sobre `log2(TPM + 1)`.
 - g:Profiler puede cambiar si cambian sus bases de datos.
 
