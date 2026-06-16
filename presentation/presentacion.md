@@ -13,10 +13,12 @@ Genómica Computacional, 11 de junio de 2026
 COVID-19 severo no es un estado biológico único. La severidad combina respuesta
 inmune, inflamación, daño vascular, comorbilidades y decisiones clínicas.
 
+Esa diferencia clínica puede reflejar cambios moleculares en sangre, sobre todo en genes relacionados con inflamación y respuesta inmune.
+
 El recurso GSE157103 permite estudiar esta heterogeneidad con RNA-seq y
 metadatos clínicos de pacientes hospitalizados.
 
-## Introducción
+## Datos Verificados
 
 Datos usados:
 
@@ -36,7 +38,7 @@ moleculares parcialmente concordantes con UCI/no UCI.
 Hipótesis: la sangre contiene una señal transcriptómica de severidad, aunque no
 una separación clínica perfecta.
 
-## Hallazgos principales
+## Pipeline
 
 Pasos aplicados:
 
@@ -47,7 +49,7 @@ Pasos aplicados:
 - k-means, jerárquico y DBSCAN
 - Evaluación posterior contra UCI/no UCI
 
-## Hallazgos principales
+## Métodos comparados
 
 Corridas evaluadas:
 
@@ -58,7 +60,7 @@ Corridas evaluadas:
 DBSCAN sí se probó. Su mejor ARI fue 0.060
 con min_samples=3, eps=22.71 y ruido 0.57.
 
-## Hallazgos principales
+## Mejor resultado
 
 Mejor método: agrupamiento jerárquico (ward, k=2).
 
@@ -72,7 +74,7 @@ Mejor método: agrupamiento jerárquico (ward, k=2).
 ARI y silueta no son calificaciones escolares. ARI mide concordancia con
 UCI/no UCI; silueta mide separación interna de grupos.
 
-## Hallazgos principales
+## Grupos
 
 Tabla grupo vs. UCI:
 
@@ -95,7 +97,7 @@ El grupo enriquecido en UCI muestra genes compatibles con activación
 inflamatoria/mieloide. El otro grupo conserva señal inmune, pero menos dominada
 por inflamación innata.
 
-## Hallazgos principales
+## Limitaciones
 
 - Sangre completa mezcla composición celular y activación transcripcional.
 - Marcadores calculados de forma exploratoria sobre `log2(TPM + 1)`.
